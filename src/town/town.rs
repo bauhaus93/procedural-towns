@@ -32,4 +32,8 @@ impl Town {
     pub fn add_inhabitant(&mut self, person: Person) {
         self.inhabitants.push(person);
     }
+
+    pub fn get_size(&self) -> usize {
+        self.inhabitants.len()
+    }
 }

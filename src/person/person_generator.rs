@@ -80,7 +80,7 @@ impl PersonGenerator {
     }
 
     fn load_names(&mut self) -> Result<(), ApplicationError> {
-        info!("Loading names...");
+        info!("Loading names");
         let first_names_male = read_file("resources/names_first_male.txt")?;
         for name in first_names_male.split("\n") {
             self.first_names_male.push(String::from(name));
@@ -98,6 +98,7 @@ impl PersonGenerator {
             self.last_names.push(String::from(name));
         }
         info!("Loaded {} last names", self.last_names.len());
+        info!("Finished loading of names");
         Ok(())
     }
 

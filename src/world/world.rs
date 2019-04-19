@@ -49,10 +49,10 @@ impl World {
         let couple_count = self.rng.gen_range(1, 5);
         for _ in 0..couple_count {
             let mut couple = self.person_generator.generate_couple();
-            couple.0.set_birthday(couple.0.get_birthday().random_past_years_range(20, 30, &mut self.rng));
-            couple.1.set_birthday(couple.1.get_birthday().random_past_years_range(20, 30, &mut self.rng));
+            couple.0.set_birthday(couple.0.get_birthday().random_past_years_range(20, 40, &mut self.rng));
+            couple.1.set_birthday(couple.1.get_birthday().random_past_years_range(20, 40, &mut self.rng));
 
-            info!("Added couple to town: {} {} ({}y) and {} {} ({}y)",
+            info!("Added couple: {} {} ({}y) and {} {} ({}y)",
                 couple.0.get_first_name(),
                 couple.0.get_last_name(),
                 couple.0.get_age(&self.curr_date),
@@ -68,13 +68,14 @@ impl World {
         for _ in 0..single_count {
             let mut person = self.person_generator.generate_random_person();
             person.set_birthday(person.get_birthday().random_past_years_range(20, 30, &mut self.rng));
-            info!("Added person to town: {} {} ({}y)",
+            info!("Added person: {} {} ({}y)",
                 person.get_first_name(),
                 person.get_last_name(),
                 person.get_age(&self.curr_date)
             );
             town.add_inhabitant(person);
         }
+        info!("Finished founding of {} ({} inhabitants)", town.get_name(), town.get_size());
         self.towns.push(town);
     }
 }

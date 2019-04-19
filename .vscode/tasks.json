@@ -6,7 +6,7 @@
             "type": "shell",
             "options": {
                 "env": {
-                    "RUST_LOG": "procedural_towns,towns=debug"
+                    "RUST_LOG": "procedural_towns=debug,towns=debug"
                 }
             },
             "command": "cargo",
@@ -27,7 +27,7 @@
             "type": "shell",
             "options": {
                 "env": {
-                    "RUST_LOG": "procedural_towns,towns=debug"
+                    "RUST_LOG": "procedural_towns=debug,towns=debug"
                 }
             },
             "command": "cargo",
