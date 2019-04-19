@@ -20,8 +20,7 @@ impl fmt::Display for Gender {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             Gender::MALE => write!(f, "male"),
-            Gender::FEMALE => write!(f, "female"),
-            _ => write!(f, "unknown")
+            Gender::FEMALE => write!(f, "female")
         }
     }
 }

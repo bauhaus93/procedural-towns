@@ -1,6 +1,6 @@
 /target
+__pycache__
 *.rs.bk
 *.zip
 *.txt
 *.lock
-__pycache__

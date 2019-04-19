@@ -7,5 +7,7 @@ extern crate rand;
 extern crate chrono;
 extern crate regex;
 
+pub mod world;
+pub mod town;
 pub mod person;
 pub mod utility;
