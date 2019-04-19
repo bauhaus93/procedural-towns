@@ -1,0 +1,66 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run_release",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "RUST_LOG": "procedural_towns,towns=debug"
+                }
+            },
+            "command": "cargo",
+            "args": [
+                "run",
+                "--release"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "presentation": {
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "run_debug",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "RUST_LOG": "procedural_towns,towns=debug"
+                }
+            },
+            "command": "cargo",
+            "args": [
+                "run"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "presentation": {
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build_names",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "build.py"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}/resources"
+            },
+            "presentation": {
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

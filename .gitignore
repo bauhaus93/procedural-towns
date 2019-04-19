@@ -1,0 +1,6 @@
+/target
+*.rs.bk
+*.zip
+*.txt
+*.lock
+__pycache__
