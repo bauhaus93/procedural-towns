@@ -2,6 +2,7 @@ use std::fmt;
 
 use crate::utility::date::Date;
 use super::gender::Gender;
+use super::effect::Effect;
 
 pub struct Person {
     id: u32,
@@ -11,7 +12,9 @@ pub struct Person {
     gender: Gender,
     father: Option<u32>,
     mother: Option<u32>,
-    spouse: Option<u32>
+    spouse: Option<u32>,
+    active_effects: Vec<Effect>,
+    past_effects: Vec<Effect>
 }
 
 impl Person {
@@ -24,7 +27,9 @@ impl Person {
             gender: Gender::FEMALE,
             father: None,
             mother: None,
-            spouse: None
+            spouse: None,
+            active_effects: Vec::new(),
+            past_effects: Vec::new()
         }
     }
 

@@ -36,12 +36,12 @@ impl Date {
         }
     }
 
-    pub fn random_future_years_range<R: Rng + ?Sized>(&self, min_years: u32, max_years: u32, rng: &mut R) -> Date {
-        *self + rng.gen_range(min_years * DAYS_PER_YEAR, max_years * DAYS_PER_YEAR)
+    pub fn random_future_years_range<R: Rng + ?Sized>(&self, range: (u32, u32), rng: &mut R) -> Date {
+        *self + rng.gen_range(range.0 * DAYS_PER_YEAR, range.1 * DAYS_PER_YEAR)
     }
 
-    pub fn random_past_years_range<R: Rng + ?Sized>(&self, min_years: u32, max_years: u32, rng: &mut R) -> Date {
-        *self - rng.gen_range(min_years * DAYS_PER_YEAR, max_years * DAYS_PER_YEAR)
+    pub fn random_past_years_range<R: Rng + ?Sized>(&self, range: (u32, u32), rng: &mut R) -> Date {
+        *self - rng.gen_range(range.0 * DAYS_PER_YEAR, range.1 * DAYS_PER_YEAR)
     }
     
     pub fn set_day(&mut self, day: u32) {

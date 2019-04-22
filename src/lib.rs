@@ -9,5 +9,7 @@ extern crate regex;
 
 pub mod world;
 pub mod town;
+pub mod narrator;
 pub mod person;
 pub mod utility;
+
