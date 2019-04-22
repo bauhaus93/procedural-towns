@@ -51,7 +51,7 @@
             "type": "shell",
             "command": "python3",
             "args": [
-                "build.py"
+                "scripts/build.py"
             ],
             "options": {
                 "cwd": "${workspaceRoot}/resources"

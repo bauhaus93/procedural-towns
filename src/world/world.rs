@@ -19,7 +19,7 @@ impl World {
     pub fn create() -> Result<Self, ApplicationError> {
         let mut rng = StdRng::from_entropy();
 
-        let creation_date = Date::random(&mut rng);
+        let creation_date = Date::random(0, 5000, &mut rng);
         let person_generator = PersonGenerator::new(&mut rng)?;
 
         let mut world = Self {
@@ -49,8 +49,8 @@ impl World {
         let couple_count = self.rng.gen_range(1, 5);
         for _ in 0..couple_count {
             let mut couple = self.person_generator.generate_couple();
-            couple.0.set_birthday(couple.0.get_birthday().random_past_years_range(20, 40, &mut self.rng));
-            couple.1.set_birthday(couple.1.get_birthday().random_past_years_range(20, 40, &mut self.rng));
+            couple.0.set_birthday(self.curr_date.random_past_years_range(20, 40, &mut self.rng));
+            couple.1.set_birthday(self.curr_date.random_past_years_range(20, 40, &mut self.rng));
 
             info!("Added couple: {} {} ({}y) and {} {} ({}y)",
                 couple.0.get_first_name(),
@@ -67,7 +67,7 @@ impl World {
         let single_count = self.rng.gen_range(4, 8);
         for _ in 0..single_count {
             let mut person = self.person_generator.generate_random_person();
-            person.set_birthday(person.get_birthday().random_past_years_range(20, 30, &mut self.rng));
+            person.set_birthday(self.curr_date.random_past_years_range(20, 30, &mut self.rng));
             info!("Added person: {} {} ({}y)",
                 person.get_first_name(),
                 person.get_last_name(),

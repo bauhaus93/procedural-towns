@@ -28,11 +28,11 @@ impl Date {
     }
 
 
-    pub fn random<R: Rng + ?Sized>(rng: &mut R) -> Date {
+    pub fn random<R: Rng + ?Sized>(min_year: u32, max_year: u32, rng: &mut R) -> Date {
         Self {
             day: rng.gen_range(0, DAYS_PER_MONTH),
             month: rng.gen_range(0, MONTHS_PER_YEAR),
-            year: rng.gen_range(0, 5000)
+            year: rng.gen_range(min_year, max_year)
         }
     }
 
