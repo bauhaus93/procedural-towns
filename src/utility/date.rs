@@ -6,7 +6,7 @@ use rand::Rng;
 // 1 year has 12 months with 30 days
 const DAYS_PER_MONTH: u32 = 30;
 const MONTHS_PER_YEAR: u32 = 12;
-const DAYS_PER_YEAR: u32 = DAYS_PER_MONTH * MONTHS_PER_YEAR;
+pub const DAYS_PER_YEAR: u32 = DAYS_PER_MONTH * MONTHS_PER_YEAR;
 
 #[derive(Eq, Clone, Copy)]
 pub struct Date {

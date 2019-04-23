@@ -8,6 +8,7 @@ pub struct Town {
     rng: StdRng,
     name: String,
     foundation: Date,
+    population_cap: usize,
     inhabitants: Vec<Person>
 }
 

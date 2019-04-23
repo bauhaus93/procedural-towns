@@ -1,6 +1,7 @@
 
 use crate::utility::date::Date;
-use super::person::Person;
+use crate::person::person::Person;
+use super::effect_type::EffectType;
 
 pub struct Effect {
     start: Date,
@@ -13,7 +14,7 @@ impl Effect {
         Self {
             start: date,
             end: None,
-            effect_type: EffectType::Pregnant(father.get_id())
+            effect_type: EffectType::Pregnancy(father.get_id())
         }
     }
     pub fn set_end(&mut self, date: Date) {
@@ -21,6 +22,3 @@ impl Effect {
     }
 }
 
-pub enum EffectType {
-    Pregnant(u32)
-}

@@ -22,7 +22,6 @@ impl World {
         let creation_date = std_narrator.get_date();
         std_narrator.skip_random_years((100, 500));
 
-
         let mut world = Self {
             rng: rng,
             creation_date: creation_date,
