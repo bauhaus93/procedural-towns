@@ -2,7 +2,7 @@ use std::fmt;
 
 use crate::utility::date::Date;
 use super::gender::Gender;
-use super::effect::Effect;
+use super::effect::effect::Effect;
 
 pub struct Person {
     id: u32,

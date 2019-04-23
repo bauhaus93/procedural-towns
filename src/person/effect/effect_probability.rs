@@ -32,7 +32,7 @@ impl EffectProbability {
 
     fn check_effect(&mut self, effect_name: &str) -> bool {
         match self.probabilities.get(effect_name) {
-            Some(prob) => self.rng.gen() < prob,
+            Some(prob) => self.rng.gen::<f64>() < *prob,
             None => {
                 warn!("Could not find effect '{}' in effect probability list", effect_name);
                 false
