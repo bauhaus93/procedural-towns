@@ -7,8 +7,7 @@ use crate::utility::application_error::ApplicationError;
 use crate::utility::read_file::read_file;
 use crate::utility::date::Date;
 
-use super::person::Person;
-use super::gender::{ Gender, get_random_gender };
+use super::{ Person, Gender, get_random_gender };
 
 pub struct PersonGenerator {
     rng: StdRng,

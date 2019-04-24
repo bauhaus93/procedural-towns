@@ -4,15 +4,13 @@ use rand::rngs::StdRng;
 use crate::utility::date::{ Date, DAYS_PER_YEAR };
 use crate::utility::application_error::ApplicationError;
 use crate::town::town::Town;
-use crate::person::person_generator::PersonGenerator;
-use crate::person::effect::effect_probability::EffectProbability;
+use crate::person::PersonGenerator;
 use super::narrator::Narrator;
 
 pub struct StdNarrator {
     rng: StdRng,
     curr_date: Date,
     person_generator: PersonGenerator,
-    effect_probability: EffectProbability,
     day_increment: u32
 }
 
@@ -23,13 +21,11 @@ impl StdNarrator {
         let day_increment = 7;
         let curr_date = Date::random(0, 5000, &mut local_rng);
         let person_generator = PersonGenerator::new(&mut local_rng)?;
-        let effect_probability = EffectProbability::new(day_increment / DAYS_PER_YEAR, &mut local_rng);
-
+ 
         let narrator = Self {
             rng: local_rng,
             curr_date: curr_date,
             person_generator: person_generator,
-            effect_probability: effect_probability,
             day_increment: day_increment
         };
 

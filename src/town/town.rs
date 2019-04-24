@@ -2,7 +2,7 @@ use rand::{ Rng, SeedableRng };
 use rand::rngs::StdRng;
 
 use crate::utility::date::Date;
-use crate::person::person::Person;
+use crate::person::Person;
 
 pub struct Town {
     rng: StdRng,
