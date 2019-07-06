@@ -1,5 +1,6 @@
+use std::iter;
 use rand::{ Rng, SeedableRng };
-use rand::rngs::StdRng;
+use rand::rngs::{ SmallRng, StdRng };
 
 use crate::utility::date::{ Date, DAYS_PER_YEAR };
 use crate::utility::application_error::ApplicationError;
@@ -57,37 +58,24 @@ impl Narrator for StdNarrator {
     }
 
     fn found_town(&mut self) -> Town {
-        let mut town = Town::found(&mut self.rng, "Townshire", self.curr_date);
+        let mut founding_rng = SmallRng::from_rng(&mut self.rng).unwrap();
+        let mut town = Town::found(&mut founding_rng, "Townshire", self.curr_date);
         info!("New town '{}', founded in {}", town.get_name(), town.get_founding_date());
 
-        let couple_count = self.rng.gen_range(1, 5);
-        for _ in 0..couple_count {
-            let mut couple = self.person_generator.generate_couple();
-            couple.0.set_birthday(self.curr_date.random_past_years_range((20, 40), &mut self.rng));
-            couple.1.set_birthday(self.curr_date.random_past_years_range((20, 40), &mut self.rng));
-
-            info!("Added couple: {} {} ({}y) and {} {} ({}y)",
-                couple.0.get_first_name(),
-                couple.0.get_last_name(),
-                couple.0.get_age(&self.curr_date),
-                couple.1.get_first_name(),
-                couple.1.get_last_name(),
-                couple.1.get_age(&self.curr_date)
-            );
-
-            town.add_inhabitant(couple.0);
-            town.add_inhabitant(couple.1);
-        }
-        let single_count = self.rng.gen_range(4, 8);
-        for _ in 0..single_count {
+        let person_count = self.rng.gen_range(10, 20);
+        for _ in 0..person_count {
             let mut person = self.person_generator.generate_random_person();
-            person.set_birthday(self.curr_date.random_past_years_range((20, 40), &mut self.rng));
+            person.set_birthday(self.curr_date.random_past_years_range((20, 40), &mut founding_rng));
             info!("Added person: {} {} ({}y)",
                 person.get_first_name(),
                 person.get_last_name(),
                 person.get_age(&self.curr_date)
             );
             town.add_inhabitant(person);
+        }
+        let marriage_count = founding_rng.gen_range(2, 4);
+        for _ in 0..marriage_count {
+            town.random_marriage();
         }
         info!("Finished founding of {} ({} inhabitants)", town.get_name(), town.get_size());
         town

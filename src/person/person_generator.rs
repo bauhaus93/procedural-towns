@@ -58,17 +58,6 @@ impl PersonGenerator {
         p
     }
 
-    pub fn generate_couple(&mut self) -> (Person, Person) {
-        let mut husband = self.generate_random_with_gender(Gender::MALE);
-        let mut wife = self.generate_random_with_gender(Gender::FEMALE);
-
-        husband.set_spouse(&wife);
-        wife.set_spouse(&husband);
-        wife.set_last_name(husband.get_last_name());
-
-        (husband, wife)
-    }
-
     pub fn generate_child(&mut self, father: &Person, mother: &Person) -> Person {
         let mut p = self.generate_random_person();
         

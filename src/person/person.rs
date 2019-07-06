@@ -37,8 +37,14 @@ impl Person {
     pub fn get_last_name(&self) -> &str {
         &self.last_name
     }
+    pub fn get_full_name(&self) -> String {
+        format!("{} {}", self.first_name, self.last_name)
+    }
     pub fn get_birthday(&self) -> Date {
         self.birthday
+    }
+    pub fn get_gender(&self) -> Gender {
+        self.gender
     }
 
     pub fn get_age(&self, curr_date: &Date) -> u32 {
@@ -52,6 +58,10 @@ impl Person {
         } else {
             age
         }
+    }
+    
+    pub fn is_married(&self) -> bool {
+        self.spouse.is_some()
     }
 
     pub fn set_birthday(&mut self, birthday: Date) {
@@ -74,6 +84,9 @@ impl Person {
     }
     pub fn set_spouse(&mut self, spouse: &Person) {
         self.spouse = Some(spouse.get_id());
+    }
+    pub fn set_spouse_by_id(&mut self, id: u32) {
+        self.spouse = Some(id);
     }
 }
 

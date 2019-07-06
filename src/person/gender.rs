@@ -1,7 +1,7 @@
 use std::fmt;
 use rand::Rng;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Eq, PartialEq)]
 pub enum Gender {
     MALE,
     FEMALE
