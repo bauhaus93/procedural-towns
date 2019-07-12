@@ -1,4 +1,4 @@
-use rand::{ Rng, FromEntropy };
+use rand::FromEntropy;
 use rand::rngs::StdRng;
 
 use crate::utility::date::Date;
@@ -7,6 +7,7 @@ use crate::town::town::Town;
 use crate::narrator::narrator::Narrator;
 use crate::narrator::std_narrator::StdNarrator;
 
+#[allow(unused)]
 pub struct World {
     rng: StdRng,
     narrator: Box<Narrator>,
@@ -22,7 +23,7 @@ impl World {
         let creation_date = std_narrator.get_date();
         std_narrator.skip_random_years((100, 500));
 
-        let mut world = Self {
+        let world = Self {
             rng: rng,
             creation_date: creation_date,
             narrator: Box::new(std_narrator),

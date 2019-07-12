@@ -1,16 +1,13 @@
-use rand;
-use rand::{ Rng, SeedableRng };
-use rand::rngs::StdRng;
+use rand::Rng;
 use rand::seq::SliceRandom;
 
 use crate::utility::application_error::ApplicationError;
 use crate::utility::read_file::read_file;
 use crate::utility::date::Date;
 
-use super::{ Person, Gender, get_random_gender };
+use super::Person;
 
 pub struct PersonGenerator {
-    rng: StdRng,
     next_id: u32,
     curr_date: Date,
     first_names_male: Vec<String>,
@@ -19,9 +16,8 @@ pub struct PersonGenerator {
 }
 
 impl PersonGenerator {
-    pub fn new<R: Rng + ?Sized>(rng: &mut R) -> Result<Self, ApplicationError> {
+    pub fn new() -> Result<Self, ApplicationError> {
         let mut pg = Self {
-            rng: StdRng::from_rng(rng).unwrap(),
             next_id: 0,
             curr_date: Date::default(),
             first_names_male: Vec::new(),
@@ -38,28 +34,25 @@ impl PersonGenerator {
         self.curr_date = new_date;
     }
 
-    pub fn generate_random_person(&mut self) -> Person {
+    pub fn generate_random_person<R: Rng + ?Sized>(&mut self, rng: &mut R) -> Person {
         let mut p = Person::new(self.next_id);
         self.next_id += 1;
-
-        let gender = get_random_gender(&mut self.rng);
-        p.set_gender(gender);
+        
+        if rng.gen_bool(0.5) {
+            p.set_male();
+            p.set_first_name(self.get_random_male_first_name(rng));
+        } else {
+            p.set_female();
+            p.set_first_name(self.get_random_female_first_name(rng));
+        }
         p.set_birthday(self.curr_date);
-        p.set_first_name(&self.get_random_first_name(gender));
-        p.set_last_name(&self.get_random_last_name());
+        p.set_last_name(&self.get_random_last_name(rng));
 
         p
     }
 
-    fn generate_random_with_gender(&mut self, gender: Gender) -> Person {
-        let mut p = self.generate_random_person();
-        p.set_gender(gender);
-        p.set_first_name(&self.get_random_first_name(gender));
-        p
-    }
-
-    pub fn generate_child(&mut self, father: &Person, mother: &Person) -> Person {
-        let mut p = self.generate_random_person();
+    pub fn generate_child<R: Rng + ?Sized>(&mut self, father: &Person, mother: &Person, rng: &mut R) -> Person {
+        let mut p = self.generate_random_person(rng);
         
         p.set_last_name(mother.get_last_name());
         p.set_father(father);
@@ -90,19 +83,22 @@ impl PersonGenerator {
         Ok(())
     }
 
-    fn get_random_first_name(&mut self, gender: Gender) -> String {
-        let name = match gender {
-            Gender::MALE => self.first_names_male.choose(&mut self.rng),
-            Gender::FEMALE => self.first_names_female.choose(&mut self.rng)
-        };
-        match name {
-            Some(n) => n.clone(),
-            None => String::from("Nameless")
+    fn get_random_male_first_name<R: Rng + ?Sized>(&self, rng: &mut R) -> &str {
+        match self.first_names_male.choose(rng) {
+            Some(name) => name,
+            None => "Nameless"
         }
     }
 
-    fn get_random_last_name(&mut self) -> String {
-        let name = self.last_names.choose(&mut self.rng);
+    fn get_random_female_first_name<R: Rng + ?Sized>(&self, rng: &mut R) -> &str {
+        match self.first_names_female.choose(rng) {
+            Some(name) => name,
+            None => "Nameless"
+        }
+    }
+
+    fn get_random_last_name<R: Rng + ?Sized>(&mut self, rng: &mut R) -> String {
+        let name = self.last_names.choose(rng);
         match name {
             Some(n) => n.clone(),
             None => String::from("McNamelessFace")

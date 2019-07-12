@@ -1,30 +1,31 @@
 use std::fmt;
 
 use crate::utility::date::Date;
-use super::Gender;
+use super::AttributeList;
 
+#[derive(Clone)]
 pub struct Person {
     id: u32,
     birthday: Date,
     first_name: String,
     last_name: String,
-    gender: Gender,
     father: Option<u32>,
     mother: Option<u32>,
-    spouse: Option<u32>,
+    attributes: AttributeList
 }
 
 impl Person {
     pub fn new(id: u32) -> Self {
+        let mut default_attr = AttributeList::default();
+        default_attr.set_single();
         Self {
             id: id,
             birthday: Date::default(),
             first_name: String::from("Unknown"),
             last_name: String::from("McUnknownFace"),
-            gender: Gender::FEMALE,
             father: None,
             mother: None,
-            spouse: None,
+            attributes: default_attr
         }
     }
 
@@ -43,9 +44,6 @@ impl Person {
     pub fn get_birthday(&self) -> Date {
         self.birthday
     }
-    pub fn get_gender(&self) -> Gender {
-        self.gender
-    }
 
     pub fn get_age(&self, curr_date: &Date) -> u32 {
         let had_birthday =
@@ -60,10 +58,6 @@ impl Person {
         }
     }
     
-    pub fn is_married(&self) -> bool {
-        self.spouse.is_some()
-    }
-
     pub fn set_birthday(&mut self, birthday: Date) {
         self.birthday = birthday;
     }
@@ -73,25 +67,30 @@ impl Person {
     pub fn set_last_name(&mut self, last_name: &str) {
         self.last_name = String::from(last_name);
     }
-    pub fn set_gender(&mut self, gender: Gender) {
-        self.gender = gender;
-    }
     pub fn set_father(&mut self, father: &Person) {
         self.father = Some(father.get_id())
     }
     pub fn set_mother(&mut self, mother: &Person) {
         self.mother = Some(mother.get_id());
     }
-    pub fn set_spouse(&mut self, spouse: &Person) {
-        self.spouse = Some(spouse.get_id());
+
+    pub fn set_male(&mut self) {
+        self.attributes.set_male();
     }
-    pub fn set_spouse_by_id(&mut self, id: u32) {
-        self.spouse = Some(id);
+    pub fn set_female(&mut self) {
+        self.attributes.set_female();
+    }
+
+    pub fn satisfies(&self, wanted_attributes: &AttributeList) -> bool {
+        self.attributes.satisfies(wanted_attributes)
+    }
+    pub fn get_attr_mut(&mut self) -> &mut AttributeList {
+        &mut self.attributes
     }
 }
 
 impl fmt::Display for Person {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "id = {}, name = {} {}, gender = {}, birthday = {}", self.id, self.first_name, self.last_name, self.gender, self.birthday)
+        write!(f, "id = {}, name = {} {}, birthday = {}", self.id, self.first_name, self.last_name, self.birthday)
     }
 }

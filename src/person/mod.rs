@@ -1,9 +1,11 @@
 pub mod person;
+pub mod people;
 pub mod person_generator;
-pub mod gender;
-pub mod status;
+pub mod attribute;
+pub mod attribute_list;
 
 pub use self::person::Person;
+pub use self::people::People;
 pub use self::person_generator::PersonGenerator;
-pub use self::gender::{ Gender, get_random_gender };
-pub use self::status::Status;
+pub use self::attribute::Attribute;
+pub use self::attribute_list::AttributeList;

@@ -1,11 +1,10 @@
-use std::iter;
 use rand::{ Rng, SeedableRng };
 use rand::rngs::{ SmallRng, StdRng };
 
-use crate::utility::date::{ Date, DAYS_PER_YEAR };
+use crate::utility::date::Date;
 use crate::utility::application_error::ApplicationError;
 use crate::town::town::Town;
-use crate::person::PersonGenerator;
+use crate::person::{ People, PersonGenerator };
 use super::narrator::Narrator;
 
 pub struct StdNarrator {
@@ -21,7 +20,7 @@ impl StdNarrator {
         let mut local_rng = StdRng::from_rng(rng).unwrap();
         let day_increment = 7;
         let curr_date = Date::random(0, 5000, &mut local_rng);
-        let person_generator = PersonGenerator::new(&mut local_rng)?;
+        let person_generator = PersonGenerator::new()?;
  
         let narrator = Self {
             rng: local_rng,
@@ -40,8 +39,8 @@ impl StdNarrator {
 }
 
 impl Narrator for StdNarrator {
-    fn narrate(&mut self, town: &mut Town) {
-
+    fn progress_town(&mut self, town: &Town) -> Town {
+        town.clone()
     }
 
     fn increment_date(&mut self) {
@@ -59,25 +58,20 @@ impl Narrator for StdNarrator {
 
     fn found_town(&mut self) -> Town {
         let mut founding_rng = SmallRng::from_rng(&mut self.rng).unwrap();
-        let mut town = Town::found(&mut founding_rng, "Townshire", self.curr_date);
-        info!("New town '{}', founded in {}", town.get_name(), town.get_founding_date());
+        let today = self.get_date();
 
-        let person_count = self.rng.gen_range(10, 20);
-        for _ in 0..person_count {
-            let mut person = self.person_generator.generate_random_person();
-            person.set_birthday(self.curr_date.random_past_years_range((20, 40), &mut founding_rng));
-            info!("Added person: {} {} ({}y)",
-                person.get_first_name(),
-                person.get_last_name(),
-                person.get_age(&self.curr_date)
-            );
-            town.add_inhabitant(person);
-        }
+        let person_count = founding_rng.gen_range(10, 20);
+        let mut people = People::new(person_count, &mut self.person_generator, &mut founding_rng);
+        people.randomize_birthdays(&today, (20, 40), &mut founding_rng);
+        
         let marriage_count = founding_rng.gen_range(2, 4);
         for _ in 0..marriage_count {
-            town.random_marriage();
+            people.random_marriage(&mut founding_rng);
         }
-        info!("Finished founding of {} ({} inhabitants)", town.get_name(), town.get_size());
+        let town = Town::new("Townshire", today, people);
+        town.print_full();
         town
     }
 }
+
+
