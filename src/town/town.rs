@@ -52,29 +52,33 @@ impl Town {
         match self.inhabitants.iter()
             .filter(|p| !p.is_married() && p.get_gender() == gender)
             .choose(&mut self.rng) {
-            Some(p) => self.extract_person(p.get_id()),
-            None => unreachable!("No unmarrried person with specified gender in town")
+            Some(p) => {
+                let pid = p.get_id();
+                self.extract_person(pid)
+            },
+            None => None
         }
     }
 
-    fn get_person_mut(&self, id: u32) -> Option<&Person> {
-        self.inhabitants.iter()
-            .find(|p| p.get_id() == id)
-    }
-
     pub fn random_marriage(&mut self) -> bool {
-        let mut husband = match self.extract_random_unmarried(Gender::MALE) {
-            Some(hb) => hb,
-            None => return false
-        };
-        let mut wife = match self.extract_random_unmarried(Gender::FEMALE) {
-            Some(wf) => wf,
-            None => return false
-        };
-        marry(&mut husband, &mut wife);
-        self.add_inhabitant(husband);
-        self.add_inhabitant(wife);
-        true
+        match (self.extract_random_unmarried(Gender::MALE),
+               self.extract_random_unmarried(Gender::FEMALE)) {
+            (Some(mut hb), Some(mut wf)) => {
+                marry(&mut hb, &mut wf);
+                self.add_inhabitant(hb);
+                self.add_inhabitant(wf);
+                true
+            },
+            (Some(hb), None) => {
+                self.add_inhabitant(hb);
+                false
+            },
+            (None, Some(wf)) => {
+                self.add_inhabitant(wf);
+                false
+            },
+            (None, None) => false
+        }
     }
 }
 
