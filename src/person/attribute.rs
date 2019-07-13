@@ -5,7 +5,8 @@ pub enum Attribute {
     Male,
     Female,
     Married(u32),
-    Pregnant { father_id: u32, birth: Date }
+    Pregnant { father_id: u32, birth: Date, count: u32 },
+    Fertile
 }
 
 impl PartialEq for Attribute {
@@ -15,6 +16,7 @@ impl PartialEq for Attribute {
             (Attribute::Female, Attribute::Female) => true,
             (Attribute::Married(_), Attribute::Married(_)) => true,
             (Attribute::Pregnant { .. }, Attribute::Pregnant { .. }) => true,
+            (Attribute::Fertile, Attribute::Fertile) => true,
             (_, _) => false
         }
     }

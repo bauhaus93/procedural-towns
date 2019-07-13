@@ -2,6 +2,7 @@
 __pycache__
 tags
 *.rs.bk
+*.swp
 *.zip
 *.txt
 *.lock

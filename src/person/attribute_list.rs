@@ -27,6 +27,10 @@ impl AttributeList {
         self.has_attribute(&Attribute::Married(0))
     }
 
+    pub fn is_fertile(&self) -> bool {
+        self.has_attribute(&Attribute::Fertile)
+    }
+
     pub fn get_spouse(&self) -> Option<u32> {
         match self.get_attr(&Attribute::Married(0)) {
             Some(&Attribute::Married(spouse_id)) => Some(spouse_id),
@@ -57,12 +61,22 @@ impl AttributeList {
         self.remove_attribute(&Attribute::Married(0))
     }
 
-    pub fn set_pregnant(&mut self, father_id: u32, birth: Date) {
-        self.attributes.push(Attribute::Pregnant { father_id: father_id, birth: birth });
+    pub fn set_pregnant(&mut self, father_id: u32, birth: Date, count: u32) {
+        self.attributes.push(Attribute::Pregnant { father_id: father_id, birth: birth, count: count });
     }
 
     pub fn pop_pregnancy(&mut self) -> Option<Attribute> {
-        self.remove_attribute(&Attribute::Pregnant { father_id: 0, birth: Date::default() })
+        self.remove_attribute(&Attribute::Pregnant { father_id: 0, birth: Date::default(), count: 0 })
+    }
+
+    pub fn set_fertile(&mut self) {
+        if !self.is_fertile() {
+            self.attributes.push(Attribute::Fertile);
+        }
+    }
+
+    pub fn clear_fertile(&mut self) {
+        self.remove_attribute(&Attribute::Fertile);
     }
 
     pub fn add(&mut self, attr: Attribute) {
@@ -139,7 +153,11 @@ impl AttributeListBuilder {
         self
     }
     pub fn set_pregnant(mut self) -> Self {
-        self.list.set_pregnant(0, Date::default());
+        self.list.set_pregnant(0, Date::default(), 0);
+        self
+    }
+    pub fn set_fertile(mut self) -> Self {
+        self.list.set_fertile();
         self
     }
 
