@@ -16,8 +16,6 @@ pub struct Person {
 
 impl Person {
     pub fn new(id: u32) -> Self {
-        let mut default_attr = AttributeList::default();
-        default_attr.set_single();
         Self {
             id: id,
             birthday: Date::default(),
@@ -25,7 +23,7 @@ impl Person {
             last_name: String::from("McUnknownFace"),
             father: None,
             mother: None,
-            attributes: default_attr
+            attributes: AttributeList::default()
         }
     }
 
@@ -45,6 +43,9 @@ impl Person {
         self.birthday
     }
 
+    pub fn get_spouse(&self) -> Option<u32> {
+        self.attributes.get_spouse()
+    }
     pub fn get_age(&self, curr_date: &Date) -> u32 {
         let had_birthday =
             curr_date.get_month() > self.birthday.get_month() ||
@@ -67,11 +68,11 @@ impl Person {
     pub fn set_last_name(&mut self, last_name: &str) {
         self.last_name = String::from(last_name);
     }
-    pub fn set_father(&mut self, father: &Person) {
-        self.father = Some(father.get_id())
+    pub fn set_father(&mut self, father_id: u32) {
+        self.father = Some(father_id);
     }
-    pub fn set_mother(&mut self, mother: &Person) {
-        self.mother = Some(mother.get_id());
+    pub fn set_mother(&mut self, mother_id: u32) {
+        self.mother = Some(mother_id);
     }
 
     pub fn set_male(&mut self) {
@@ -81,8 +82,12 @@ impl Person {
         self.attributes.set_female();
     }
 
-    pub fn satisfies(&self, wanted_attributes: &AttributeList) -> bool {
-        self.attributes.satisfies(wanted_attributes)
+    pub fn satisfies(&self, wanted_attributes: &AttributeList, unwanted_attributes: &AttributeList) -> bool {
+        self.attributes.satisfies(wanted_attributes, unwanted_attributes)
+    }
+
+    pub fn get_attr(&self) -> &AttributeList {
+        &self.attributes
     }
     pub fn get_attr_mut(&mut self) -> &mut AttributeList {
         &mut self.attributes

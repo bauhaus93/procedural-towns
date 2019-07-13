@@ -1,10 +1,11 @@
+use crate::utility::Date;
 
 #[derive(Eq, Clone, Copy)]
 pub enum Attribute {
     Male,
     Female,
-    Single,
-    Married(u32)
+    Married(u32),
+    Pregnant { father_id: u32, birth: Date }
 }
 
 impl PartialEq for Attribute {
@@ -12,8 +13,8 @@ impl PartialEq for Attribute {
         match (self, rhs) {
             (Attribute::Male, Attribute::Male) => true,
             (Attribute::Female, Attribute::Female) => true,
-            (Attribute::Single, Attribute::Single) => true,
             (Attribute::Married(_), Attribute::Married(_)) => true,
+            (Attribute::Pregnant { .. }, Attribute::Pregnant { .. }) => true,
             (_, _) => false
         }
     }

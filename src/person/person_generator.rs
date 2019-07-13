@@ -51,15 +51,6 @@ impl PersonGenerator {
         p
     }
 
-    pub fn generate_child<R: Rng + ?Sized>(&mut self, father: &Person, mother: &Person, rng: &mut R) -> Person {
-        let mut p = self.generate_random_person(rng);
-        
-        p.set_last_name(mother.get_last_name());
-        p.set_father(father);
-        p.set_mother(mother);
-        p
-    }
-
     fn load_names(&mut self) -> Result<(), ApplicationError> {
         info!("Loading names");
         let first_names_male = read_file("resources/names_first_male.txt")?;
